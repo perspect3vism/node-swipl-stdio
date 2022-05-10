@@ -5,6 +5,7 @@ const spawn = require('child_process').spawn;
 const split = require('split');
 const term = require('./lib/term');
 const debug = require('debug')('swipl');
+const os = require('os');
 
 // Helper class to track the engine state and
 // detect error conditions.
@@ -50,10 +51,9 @@ class QueuedQuery {
 // SWI-Prolog process.
 
 class Engine {
-
-    constructor() {
+    constructor(swiplPath = 'swipl') {
         const top = path.join(__dirname, 'top.pl');
-        this.swipl = spawn('swipl', [
+        this.swipl = spawn(swiplPath, [
             '-f', top,
             '--no-tty',
             '-q',
@@ -94,7 +94,7 @@ class Engine {
                 return;
             }
             try {
-                const obj = JSON.parse(line);                
+                const obj = JSON.parse(line);       
                 if (this.query) {
                     // Pass the response to the query instance.
                     // It will apply changes to the engine state
@@ -150,7 +150,8 @@ class Engine {
         try {
             // Wait until respone comes in
             // before closing the query.
-            return await query.next();
+            const q = await query.next();
+            return q;
         } finally {
             await query.close();
         }
@@ -183,9 +184,19 @@ class Engine {
     }
 
     _sendObject(obj) {        
-        const json = JSON.stringify(obj);
+        let json = JSON.stringify(obj);
+        
+
+        if (os.platform() === 'win32') {
+            const re = /([a-zA-Z]:)?(\\[a-zA-Z0-9_-]+)+\\?/
+
+            if (re.test(obj.query)) {
+                json = json.replace(/\\/g, "\\\\")
+            }
+        }
+
         debug(`Sending to Prolog: ${json}.`);
-        this.swipl.stdin.write(`${json}\n`);
+        this.swipl.stdin.write(`${json}\n`, 'ascii');
         this.state.setWaiting();
     }
 }
