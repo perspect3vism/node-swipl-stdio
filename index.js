@@ -51,7 +51,7 @@ class QueuedQuery {
 // SWI-Prolog process.
 
 class Engine {
-    constructor(swiplPath = 'swipl') {
+    constructor(swiplPath = 'swipl', homePath = undefined) {
         const top = path.join(__dirname, 'top.pl');
         this.swipl = spawn(swiplPath, [
             '-f', top,
@@ -59,7 +59,9 @@ class Engine {
             '-q',
             '-t', 'loop',
             '--nodebug',
-            '-O'
+            '-O',
+            homePath ? '--home' : '',
+            homePath ? homePath : '',
         ]);
         this.state = new EngineState();
         this.status = 0;
