@@ -53,16 +53,19 @@ class QueuedQuery {
 class Engine {
     constructor(swiplPath = 'swipl', homePath = undefined) {
         const top = path.join(__dirname, 'top.pl');
-        this.swipl = spawn(swiplPath, [
+        let params = [
             '-f', top,
             '--no-tty',
             '-q',
             '-t', 'loop',
             '--nodebug',
             '-O',
-            homePath ? '--home' : '',
-            homePath ? homePath : '',
-        ]);
+        ]
+        if(homePath) {
+            params.push('--home')
+            params.push(homePath)
+        }
+        this.swipl = spawn(swiplPath, params);
         this.state = new EngineState();
         this.status = 0;
         this.query = null;
