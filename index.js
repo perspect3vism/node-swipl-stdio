@@ -64,8 +64,7 @@ class Engine {
             '-O',
         ]
         if(homePath) {
-            params.push('--home')
-            params.push(homePath)
+            params.push(`--home=${homePath}`)
         }
         console.log("PARAMS:", params)
         this.swipl = spawn(swiplPath, params);
