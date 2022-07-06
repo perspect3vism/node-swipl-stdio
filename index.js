@@ -54,7 +54,7 @@ class Engine {
     constructor(swiplPath = 'swipl', homePath = undefined) {
         console.log("SWIPL PATH:", swiplPath)
         console.log("SWIPL HOME PATH:", homePath)
-        const top = path.join(__dirname, 'top.pl');
+        const top = path.join(homePath, 'top.pl');
         let params = [
             '-f', top,
             '--no-tty',
