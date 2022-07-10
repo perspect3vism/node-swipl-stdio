@@ -52,7 +52,21 @@ class QueuedQuery {
 
 class Engine {
     constructor(swiplPath = 'swipl', homePath = undefined) {
-        const top = path.join(homePath, 'top.pl');
+        let top
+        // If we run inside a vercel/pkg package (like with ad4m-host)
+        // all our files got packed and re-routed to vercel's snapshot
+        // filesystem.
+        // The problem with that is that the swipl binary doesn't have access
+        // to /snapshot, so we need to get access to top.pl some other way.
+        // ad4m-host copies over top.pl to the swipl home directory.
+        // (https://github.com/perspect3vism/ad4m-host/pull/29/files)
+        // To have swipl work in other (dev-cycle) uses we need to
+        // check if we are in a vercel/pkg snapshot filesystem like so:
+        if(__dirname.startsWith("/snapshot"))
+            top = path.join(homePath, 'top.pl')
+        else
+            top = path.join(__dirname, 'top.pl')
+        
         let params = [
             '-f', top,
             '--no-tty',
