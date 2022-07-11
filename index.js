@@ -78,7 +78,7 @@ class Engine {
         if(homePath) {
             params.push(`--home=${homePath}`)
         }
-        this.swipl = spawn(swiplPath, params);
+        this.swipl = spawn(swiplPath, params, {cwd: path.dirname(swiplPath)});
         this.state = new EngineState();
         this.status = 0;
         this.query = null;
