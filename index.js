@@ -62,7 +62,7 @@ class Engine {
         // (https://github.com/perspect3vism/ad4m-host/pull/29/files)
         // To have swipl work in other (dev-cycle) uses we need to
         // check if we are in a vercel/pkg snapshot filesystem like so:
-        if(__dirname.startsWith("/snapshot"))
+        if(__dirname.startsWith("/snapshot") || __dirname.startsWith('C:\\snapshot'))
             top = path.join(homePath, 'top.pl')
         else
             top = path.join(__dirname, 'top.pl')
