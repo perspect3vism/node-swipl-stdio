@@ -134,10 +134,6 @@ class Engine {
         // Stderr of SWI-Prolog is just redirected
         // to the main stderr.
         this.swipl.stderr.on('data', (data) => {
-            if(data.startsWith("Warning: /tmp") || data.startsWith("Warning:    Redefined") || data.startsWith("Warning:    Previously")) {
-                return
-            }
-
             process.stderr.write(data);
         });
     }
