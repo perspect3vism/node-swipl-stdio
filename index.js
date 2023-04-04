@@ -1,6 +1,6 @@
 const path = require('path');
 const assert = require('assert');
-const EventEmitter = require('events');
+const { EventEmitter } = require('events');
 const spawn = require('child_process').spawn;
 const split = require('split');
 const term = require('./lib/term');
