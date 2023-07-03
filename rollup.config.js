@@ -6,11 +6,11 @@ module.exports = {
   output: [
     {
       format: 'cjs',
-      file: "dist/index.cjs",
+      file: "lib/index.cjs",
     },
     {
       format: 'esm',
-      file: "dist/index.js",
+      file: "lib/index.js",
     }
   ],
   plugins: [
