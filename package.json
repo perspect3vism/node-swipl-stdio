@@ -11,11 +11,16 @@
   ],
   "scripts": {
     "test": "mocha tests/",
-    "lint": "eslint index.js lib/ tests/"
+    "lint": "eslint index.js lib/ tests/",
+    "bundle": "rollup -c rollup.config.js"
   },
   "devDependencies": {
+    "@rollup/plugin-alias": "^5.0.0",
+    "@rollup/plugin-commonjs": "^25.0.2",
+    "@rollup/plugin-node-resolve": "^15.1.0",
     "eslint": "^6.8.0",
-    "mocha": "^3.2.0"
+    "mocha": "^3.2.0",
+    "rollup": "^3.26.0"
   },
   "dependencies": {
     "debug": "^2.6.4",
